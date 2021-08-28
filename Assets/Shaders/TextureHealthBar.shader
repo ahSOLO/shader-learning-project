@@ -32,6 +32,7 @@ Shader"Unlit/TextureHealthBar"
             };
 
             sampler2D _MainTex;
+            float4 _MainTex_TexelSize;
             float _Health;
 
             float InverseLerp(float a, float b, float v)
@@ -50,7 +51,8 @@ Shader"Unlit/TextureHealthBar"
 
 
             fixed4 frag (v2f i) : SV_Target
-            {
+            {                                
+                
                 float4 col = tex2D(_MainTex, float2(_Health, i.uv.y));
                 float healthBarMask = _Health > i.uv.x; // bools can be cast to floats
                 // clip(healthBarMask - 0.5); // remove backgound in opaque shader
@@ -62,7 +64,22 @@ Shader"Unlit/TextureHealthBar"
                     col.xyz *= float4(flash, 1);
                 }
                 
-                return col * healthBarMask;
+                // Feather edges - draws a signed distance field by comparing uv coordinates with a line segment drawn on the center of the bar
+                float normalizedWidth = _MainTex_TexelSize.z / _MainTex_TexelSize.w;
+                float2 featherCoords = i.uv;
+                featherCoords.x *= normalizedWidth;
+                float2 featherLinePoint = float2(
+                    clamp(featherCoords.x, 
+                    normalizedWidth * 1 / (normalizedWidth / 0.5),
+                    normalizedWidth - normalizedWidth / (normalizedWidth / 0.5)),
+                        0.5);
+                float sdf = distance(featherCoords, featherLinePoint) * 2 - 1;
+                float featherMask = sdf <= 0;
+                clip(featherMask - 0.5); // remove background
+                
+                // Outline
+                float outlineMask = ( sdf > -0.08 ) * ( sdf <= 0 );
+                return col * healthBarMask * featherMask + float4(col.x * 1.2,col.y * 1.2,0.5,1) * outlineMask;
             }
             ENDCG
         }
