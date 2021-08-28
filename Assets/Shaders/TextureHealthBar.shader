@@ -78,7 +78,11 @@ Shader"Unlit/TextureHealthBar"
                 clip(featherMask - 0.5); // remove background
                 
                 // Outline
-                float outlineMask = ( sdf > -0.08 ) * ( sdf <= 0 );
+	            float sdfPD = fwidth(sdf); // add antialiasing
+	            float outlineMask = saturate((sdf + 0.1) / sdfPD); // hard coded border size
+                
+                //float outlineMask = ( sdf > -0.08 ) * ( sdf <= 0 );
+                                
                 return col * healthBarMask * featherMask + float4(col.x * 1.2,col.y * 1.2,0.5,1) * outlineMask;
             }
             ENDCG
