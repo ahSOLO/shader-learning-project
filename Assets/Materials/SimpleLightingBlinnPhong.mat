@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SimpleLighting
-  m_Shader: {fileID: 4800000, guid: 9fa502858c451aa4e8324d1f369b9d55, type: 3}
+  m_Name: SimpleLightingBlinnPhong
+  m_Shader: {fileID: 4800000, guid: 19734072dac63c04b8b3c1858eab599b, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -100,7 +100,7 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EnvironmentReflections: 1
-    - _Gloss: 3
+    - _Gloss: 4
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0

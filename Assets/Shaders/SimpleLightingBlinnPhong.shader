@@ -1,4 +1,4 @@
-Shader "Custom/SimpleLighting"
+Shader "Custom/SimpleLightingBlinnPhong"
 {
     Properties
     {
@@ -54,14 +54,14 @@ Shader "Custom/SimpleLighting"
                 // diffuse lighting
                 float3 N = normalize(i.normal); // normalize because interpolated normals between vertices aren't guaranteed to have a length of 1
                 float3 L = _WorldSpaceLightPos0.xyz; // first pass is always directional light, meaning this gives us a direction and not a point
-                
-                float3 diffuseLight = saturate(dot(N, L)) * _LightColor0.xyz; // saturate probably faster than max
+                float3 lambertian = saturate(dot(N, L));
+                float3 diffuseLight = lambertian * _LightColor0.xyz; // saturate probably faster than max
 
                 // specular lighting
                 float3 V = normalize(_WorldSpaceCameraPos - i.worldPos);
-                float3 R = reflect(-L, N);
-                float3 specularLight = saturate(dot(V, R)) * _LightColor0.xyz;
-                specularLight = pow(specularLight, _Gloss * _Gloss); // apply gloss (specular exponent)
+                float3 H = normalize(V + N);
+                float3 specularLight = saturate(dot(N, H)) * (lambertian > 0) * _LightColor0.xyz;
+                specularLight = pow(specularLight, _Gloss * _Gloss * 4); // apply gloss (specular exponent)
                 
                 // sample the texture
                 fixed4 col = tex2D(_MainTex, i.uv);
