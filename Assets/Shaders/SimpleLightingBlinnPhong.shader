@@ -3,7 +3,7 @@ Shader "Custom/SimpleLightingBlinnPhong"
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _Gloss ("Glossiness", Range(1, 10)) = 1
+        _Gloss ("Glossiness", Range(0, 1)) = 0.5
     }
     SubShader
     {
@@ -61,7 +61,8 @@ Shader "Custom/SimpleLightingBlinnPhong"
                 float3 V = normalize(_WorldSpaceCameraPos - i.worldPos);
                 float3 H = normalize(V + N);
                 float3 specularLight = saturate(dot(N, H)) * (lambertian > 0) * _LightColor0.xyz;
-                specularLight = pow(specularLight, _Gloss * _Gloss * 4); // apply gloss (specular exponent)
+                float specularExponent = exp2(_Gloss * 10) + 2;
+                specularLight = pow(specularLight, specularExponent) * _Gloss; // apply gloss (specular exponent), add approximation for energy conservation, multiply by 4 to account for extra glossiness needed in contrast to Phong 
                 
                 // sample the texture
                 fixed4 col = tex2D(_MainTex, i.uv);
