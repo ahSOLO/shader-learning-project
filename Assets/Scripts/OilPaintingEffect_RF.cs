@@ -11,6 +11,8 @@ public class OilPaintingEffect_RF : ScriptableRendererFeature
         Material blitMaterial;
         RenderTargetIdentifier source;
         RenderTargetIdentifier destination;
+        int temporaryRTId = Shader.PropertyToID("_TempRT");
+
         public BlitPass(Material blitMaterial)
         {
             this.blitMaterial = blitMaterial;
@@ -25,7 +27,9 @@ public class OilPaintingEffect_RF : ScriptableRendererFeature
         {
             var renderer = renderingData.cameraData.renderer;
             source = renderer.cameraColorTarget;
-            destination = renderer.cameraColorTarget;
+            cmd.GetTemporaryRT(temporaryRTId, renderingData.cameraData.cameraTargetDescriptor);
+            destination = new RenderTargetIdentifier(temporaryRTId);
+            // destination = renderer.cameraColorTarget;
         }
 
         // Here you can implement the rendering logic.
@@ -36,6 +40,7 @@ public class OilPaintingEffect_RF : ScriptableRendererFeature
         {
             CommandBuffer cmd = CommandBufferPool.Get();
             Blit(cmd, source, destination, blitMaterial);
+            Blit(cmd, destination, source);
 
             context.ExecuteCommandBuffer(cmd);
             CommandBufferPool.Release(cmd);

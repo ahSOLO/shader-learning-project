@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-9103039698786854081
+--- !u!114 &-2717958567390559597
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9,11 +9,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa55a5724eb729641bfc117b677b65bb, type: 3}
-  m_Name: NewOilPaintingEffectRF
+  m_Script: {fileID: 11500000, guid: 36b34c518d0de5a4c83eb9cc5f1087fe, type: 3}
+  m_Name: OilPaint
   m_EditorClassIdentifier: 
-  m_Active: 0
-  blitMaterial: {fileID: 2100000, guid: 8a6a591b8a3d85540b14673ddad44cc9, type: 2}
+  m_Active: 1
+  settings:
+    Event: 300
+    blitMaterial: {fileID: 2100000, guid: 8a6a591b8a3d85540b14673ddad44cc9, type: 2}
+    blitMaterialPassIndex: 0
+    setInverseViewMatrix: 0
+    requireDepthNormals: 0
+    srcType: 0
+    srcTextureId: 
+    srcTextureObject: {fileID: 0}
+    dstType: 0
+    dstTextureId: 
+    dstTextureObject: {fileID: 0}
+    overrideGraphicsFormat: 0
+    graphicsFormat: 8
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27,8 +40,8 @@ MonoBehaviour:
   m_Name: UniversalRenderPipelineAsset_Renderer
   m_EditorClassIdentifier: 
   m_RendererFeatures:
-  - {fileID: -9103039698786854081}
-  m_RendererFeatureMap: 3fdb87b99f81ab81
+  - {fileID: -2717958567390559597}
+  m_RendererFeatureMap: 93c2745415df47da
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
   shaders:

@@ -7,8 +7,9 @@ Shader "Hidden/OilPaint"
     }
     SubShader
     {
-        // No culling or depth
         Tags { "RenderType" = "Opaque"}
+		Cull Off ZWrite Off ZTest Always
+		
 
         Pass
         {
